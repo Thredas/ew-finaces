@@ -7,3 +7,9 @@
 .index-page {
     width: 600px;
 }
+
+@media (max-width: 700px) {
+    .index-page{
+        width: auto;
+    }
+}

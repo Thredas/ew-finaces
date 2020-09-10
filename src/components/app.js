@@ -1,32 +1,21 @@
-import React, { Component } from "react";
-import { Router, Route, Switch } from 'react-router-dom';
+import React from "react";
+import { BrowserRouter } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
+import useRoutes from "./routes";
+import {AuthContext} from "../auth-context";
+import {useAuth} from "../hooks/auth.hook";
 
-import IndexPage from "./index-page";
-import CreateReportPage from "./create-report-page";
+export default function App () {
+    const history = createBrowserHistory();
+    const {token, userId, login, logout} = useAuth();
+    const isLoggedIn = !!token;
+    const routes = useRoutes(isLoggedIn, history);
 
-export default class App extends Component {
-    render() {
-        //localStorage.clear();
-        const history = createBrowserHistory();
-
-        return (
-            <Router history={history}>
-                <Switch>
-                    <Route path="/" history={history} component={IndexPage} exact />
-                    <Route path="/create" component={CreateReportPage} history={history} exact />
-                    <Route path="/create/:idx"
-                           render={({match, history}) =>
-                               <CreateReportPage idx={match.params.idx} history={history}/>} exact />
-
-                    <Route render={() => (
-                        <div className="text-center mt-5">
-                            <h1>404</h1>
-                            <p>Page not found</p>
-                        </div>
-                    )} />
-                </Switch>
-            </Router>
-        );
-    }
-}
+    return (
+        <AuthContext.Provider value={{token, login, logout, userId, isLoggedIn}} >
+            <BrowserRouter>
+                {routes}
+            </BrowserRouter>
+        </AuthContext.Provider>
+    );
+};
