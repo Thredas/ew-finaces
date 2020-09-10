@@ -87,6 +87,7 @@ export default function CreateReportPage({idx, history}) {
                 {'Content-Type': 'application/json',
                     Authorization: auth.token })
                 .then(() => {
+                    setLoading(true);
                     history.push('/');
                 });
         } else {
@@ -94,7 +95,8 @@ export default function CreateReportPage({idx, history}) {
                 {'Content-Type': 'application/json',
                  Authorization: auth.token })
                 .then(() => {
-                     history.push('/');
+                    setLoading(true);
+                    history.push('/');
                 });
         }
     };
@@ -103,6 +105,7 @@ export default function CreateReportPage({idx, history}) {
         request(`/api/reports/${idx}`, 'DELETE', null,
             {Authorization: auth.token })
             .then(() => {
+                setLoading(true);
                 history.push('/');
             });
     };
@@ -151,7 +154,6 @@ export default function CreateReportPage({idx, history}) {
         newTableData[idx].name = name !== undefined ? name : table[idx].name;
         newTableData[idx].completed = completed !== undefined ? completed : table[idx].completed;
 
-        console.log(percent)
         if (percent !== -1) {
             newTableData[idx].percent = percent.value;
             newTableData[idx].sum = Math.floor(percent.baseNumber * (percent.value / 100))

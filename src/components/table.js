@@ -16,12 +16,14 @@ export default function Table({ name, tableData, baseNumber, onAddItem,
 
         return tableData.map((el) => {
             last_ost = last_ost - baseNumber * (el.percent / 100);
+            const isDisabled = baseNumber <= 0;
             return (
                 <tr key={el.id}>
                     <td style={{'width': '50%'}}>
                         <input type="text"
                                className="w-75"
                                value={el.name}
+                               disabled={isDisabled}
                                onChange={(e) => onChangeTableItem(tableData, el, -1, e.target.value)} />
 
                         <button type="button"
@@ -37,12 +39,14 @@ export default function Table({ name, tableData, baseNumber, onAddItem,
                     <td>
                         <input type="text"
                                value={el.percent}
+                               disabled={isDisabled}
                                onChange={(e) => onChangeTableItem(tableData, el,
                                    {baseNumber: baseNumber, value: e.target.value})} />
                     </td>
 
                     <td>
                         <input value={el.sum}
+                               disabled={isDisabled}
                                placeholder={Math.floor(baseNumber * (el.percent / 100))}
                                onChange={(e) => onChangeTableItem(tableData, el,
                             -1, undefined, undefined, {baseNumber: baseNumber, value: e.target.value} )} />
@@ -52,6 +56,7 @@ export default function Table({ name, tableData, baseNumber, onAddItem,
 
                     <td className=''>
                         <input type="checkbox"
+                               disabled={isDisabled}
                                className="checkbox"
                                checked={el.completed}
                                onChange={(e) => onChangeTableItem(tableData, el,
